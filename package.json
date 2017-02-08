@@ -1,0 +1,12 @@
+{
+	"name": "blinky",
+	"version": "0.0.1",
+	"license": "bsd",
+	"dependencies": {
+		"coffee-loader": "*",
+		"coffee-script": "*",
+		"cylon": "*",
+		"cylon-sphero": "*",
+		"serialport": "*"
+	}
+}
