@@ -1,12 +1,31 @@
 {
-	"name": "blinky",
-	"version": "0.0.1",
-	"license": "bsd",
-	"dependencies": {
-		"coffee-loader": "*",
-		"coffee-script": "*",
-		"cylon": "*",
-		"cylon-sphero": "*",
-		"serialport": "*"
-	}
+  "name": "blinky",
+  "version": "0.0.1",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "coffee-loader": "*",
+    "coffee-script": "*",
+    "cylon": "*",
+    "cylon-sphero": "*",
+    "serialport": "*"
+  },
+  "description": "Blinkin' lights game for sphero",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha --compilers coffee:coffee-script/register -R spec -u bdd -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bmidgley/blinky.git"
+  },
+  "keywords": [
+    "sphero",
+    "robotics"
+  ],
+  "author": "Brad Midgley",
+  "bugs": {
+    "url": "https://github.com/bmidgley/blinky/issues"
+  },
+  "homepage": "https://github.com/bmidgley/blinky#readme"
 }
