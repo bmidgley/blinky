@@ -7,7 +7,10 @@
     "coffee-script": "*",
     "cylon": "*",
     "cylon-sphero": "*",
-    "serialport": "*"
+    "readline": "*",
+    "serialport": "*",
+    "webpack": "*",
+    "webpack-dev-server": "*"
   },
   "description": "Blinkin' lights game for sphero",
   "main": "app.js",
@@ -27,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/bmidgley/blinky/issues"
   },
-  "homepage": "https://github.com/bmidgley/blinky#readme"
+  "homepage": "https://github.com/bmidgley/blinky#readme",
+  "scripts": {
+    "start": "webpack-dev-server --config config/webpack.config.js"
+  }
 }

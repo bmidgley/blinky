@@ -10,7 +10,3 @@ robot = Cylon.robot
       my.sphero.roll 60, Math.floor(360 * Math.random())
 
 robot.start()
-
-addr = '1499e203745e'
-
-
