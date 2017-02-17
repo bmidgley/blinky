@@ -15,11 +15,19 @@ randomColor = ->
   r << 16 | g << 8 | b 
 
 stop = (my) ->
-  my.setRawMotors lmode: 0, rmode: 0
+  my.sphero.setRawMotors lmode: 0, rmode: 0
+  my.sphero.setStabilization true
 
 shake = (my) ->
-  my.setRawMotors lmode: 1, lpower: 250, rmode: 1, rpower: 250
-  setTimeout (-> stop my), 2000
+  my.sphero.setStabilization false
+  my.sphero.setRawMotors lmode: 1, lpower: 250, rmode: 1, rpower: 250
+  setTimeout (-> stop my), 3000
+
+timer = null
+
+startTimer = (my) ->
+  clearTimeout timer
+  timer = setTimeout (-> shake my), 6000
 
 Cylon.robot
   connections: {sphero: {adaptor: 'sphero', port: ports[0] }}
@@ -27,24 +35,20 @@ Cylon.robot
   devices: {sphero: {driver: 'sphero'}}
 
   work: (my) ->
-    clock = new Date
+    color = 0
 
-    every (5).second(), ->
+    my.sphero.on 'collision', (data) ->
       color = randomColor()
       my.sphero.color color
-      my.sphero.roll 60, Math.floor(360 * Math.random())
-
-    my.sphero.on 'collisions', (data) ->
-      console.log 'collision', clock, data
-      clock = new Date
+      startTimer my
 
     my.sphero.detectCollisions()
 
-    my.sphero.setStabilization false
+    my.sphero.setStabilization true
 
-    my.sphero.setRawMotors lmode: 1, lpower: 250, rmode: 1, rpower: 250
+    startTimer my
 
 port.on 'open', -> 
   console.log 'connection opened'
-  Cylon.start()
+  setTimeout (-> Cylon.start()), 3000
 
