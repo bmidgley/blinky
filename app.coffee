@@ -1,21 +1,36 @@
 Cylon = require 'cylon'
+SerialPort = require 'serialport'
 
-randomNumber = (min = 128, max = 255) -> min + (max - min)*Math.random()
+ports = ['/dev/rfcomm0']
 
-randomColor = -> randomNumber() << 16 | randomNumber() << 8 | randomNumber() 
+port = new SerialPort ports[0]
 
-shake = (my) -> my.setRawMotors(0, -> console.log('shaking'))
+randomNumber = (max) -> if max < 0 then 0 else max*Math.random()
+
+randomColor = -> 
+  total = 255
+  r = randomNumber(total)
+  g = randomNumber(total - r)
+  b = randomNumber(total - r - g)
+  r << 16 | g << 8 | b 
+
+stop = (my) ->
+  my.setRawMotors lmode: 0, rmode: 0
+
+shake = (my) ->
+  my.setRawMotors lmode: 1, lpower: 250, rmode: 1, rpower: 250
+  setTimeout (-> stop my), 2000
 
 Cylon.robot
-  connections: {sphero: {adaptor: 'sphero', port: '/dev/rfcomm0' }}
+  connections: {sphero: {adaptor: 'sphero', port: ports[0] }}
 
   devices: {sphero: {driver: 'sphero'}}
 
   work: (my) ->
     clock = new Date
-    color = randomColor()
 
-    every (1).second(), ->
+    every (5).second(), ->
+      color = randomColor()
       my.sphero.color color
       my.sphero.roll 60, Math.floor(360 * Math.random())
 
@@ -23,12 +38,13 @@ Cylon.robot
       console.log 'collision', clock, data
       clock = new Date
 
-    my.sphero.detectCollisions()`
+    my.sphero.detectCollisions()
 
-Cylon.start()
+    my.sphero.setStabilization false
 
-# setRawMotors setRawMotorValues(lmode, lpower, rmode, rpower)
-# setStabalisation(false)
-# blink?
-# shake?
+    my.sphero.setRawMotors lmode: 1, lpower: 250, rmode: 1, rpower: 250
+
+port.on 'open', -> 
+  console.log 'connection opened'
+  Cylon.start()
 

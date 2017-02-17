@@ -1,1 +1,2 @@
-sudo rfcomm bind /dev/rfcomm0 14:99:e2:03:74:5e
+sudo rfcomm bind /dev/rfcomm0 68:86:E7:03:51:EC
+sudo rfcomm bind /dev/rfcomm1 14:99:e2:03:74:5e
